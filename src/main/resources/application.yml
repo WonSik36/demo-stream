@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: demo-spring-cloud-stream
+
+---
+spring.cloud.stream:
+  function:
+    definition: supply;userEventConsumer
+
+---
+spring.cloud.stream:
+  bindings:
+    supply-out-0:
+      destination: pageviews
+      binder: kafka
+      producer:
+        use-native-encoding: true
+  binders:
+    kafka:
+      type: kafka
+      environment:
+        spring.cloud.stream.kafka.binder:
+          brokers: <Broker IP>
+          configuration:
+            value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+  kafka:
+    bindings:
+      supply-out-0:
+        producer:
+          configuration:
+            schema.registry.url: <Registry IP>
+
+---
+spring.cloud.stream:
+  bindings:
+    userEventConsumer-in-0:
+      destination: users
+      binder: kafka-streams
+
+  binders:
+    kafka-streams:
+      type: kstream
+      environment:
+        spring.cloud.stream.kafka.streams.binder:
+          brokers: <Broker IP>
+          configuration:
+            schema.registry.url: <Registry IP>
+

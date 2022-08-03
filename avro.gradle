@@ -1,0 +1,4 @@
+avro {
+    createSetters = false
+    fieldVisibility = "PRIVATE"
+}
