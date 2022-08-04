@@ -5,7 +5,7 @@ spring:
 ---
 spring.cloud.stream:
   function:
-    definition: supply;userEventConsumer
+    definition: supply;userEventConsumer;consumePageViews
 
 ---
 spring.cloud.stream:
@@ -15,6 +15,11 @@ spring.cloud.stream:
       binder: kafka
       producer:
         use-native-encoding: true
+    consumePageViews-in-0:
+      destination: pageviews
+      binder: kafka
+      consumer:
+        use-native-encoding: true
   binders:
     kafka:
       type: kafka
@@ -23,10 +28,15 @@ spring.cloud.stream:
           brokers: <Broker IP>
           configuration:
             value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
   kafka:
     bindings:
       supply-out-0:
         producer:
+          configuration:
+            schema.registry.url: <Registry IP>
+      consumePageViews-in-0:
+        consumer:
           configuration:
             schema.registry.url: <Registry IP>
 
@@ -46,3 +56,7 @@ spring.cloud.stream:
           configuration:
             schema.registry.url: <Registry IP>
 
+---
+spring.integration:
+  poller:
+    fixed-delay: 10s
