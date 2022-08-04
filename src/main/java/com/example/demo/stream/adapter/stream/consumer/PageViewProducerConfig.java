@@ -5,8 +5,10 @@ import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import ksql.pageviews;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serde;
+import org.springframework.cloud.function.context.PollableBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Flux;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -20,13 +22,13 @@ import java.util.function.Supplier;
 @Configuration
 public class PageViewProducerConfig {
 
-    @Bean
-    public Supplier<pageviews> supply() {
+    @PollableBean
+    public Supplier<Flux<pageviews>> supply() {
         return () -> {
             PageView pageView = new PageView(LocalDateTime.now(), "User_1", "Page_55");
             log.info("Page View Event Occurred: {}", pageView);
 
-            return toPageViewDto(pageView);
+            return Flux.just(toPageViewDto(pageView));
         };
     }
 
