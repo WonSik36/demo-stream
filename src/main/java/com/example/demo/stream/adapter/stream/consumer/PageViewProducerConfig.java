@@ -35,7 +35,7 @@ public class PageViewProducerConfig {
     private static pageviews toPageViewDto(PageView pageView) {
         Instant instant = pageView.getViewTime().atZone(ZoneId.systemDefault()).toInstant();
 
-        return new pageviews(instant.toEpochMilli(), pageView.getUserId(), pageView.getUserId());
+        return new pageviews(instant.toEpochMilli(), pageView.getUserId(), pageView.getPageId());
     }
 
     @Bean
