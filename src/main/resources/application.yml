@@ -16,6 +16,7 @@ spring.cloud.stream:
       producer:
         use-native-encoding: true
     consumePageViews-in-0:
+      group: pageviewsGroup
       destination: pageviews
       binder: kafka
       consumer:
@@ -39,6 +40,8 @@ spring.cloud.stream:
         consumer:
           configuration:
             schema.registry.url: <Registry IP>
+            value.deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+            spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
 
 ---
 spring.cloud.stream:
@@ -55,6 +58,13 @@ spring.cloud.stream:
           brokers: <Broker IP>
           configuration:
             schema.registry.url: <Registry IP>
+          deserializationExceptionHandler: logAndContinue
+
+  kafka.streams:
+    bindings:
+      userEventConsumer-in-0:
+        consumer:
+          applicationId: usersGroup
 
 ---
 spring.integration:
