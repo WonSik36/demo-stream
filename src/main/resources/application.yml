@@ -70,3 +70,6 @@ spring.cloud.stream:
 spring.integration:
   poller:
     fixed-delay: 10s
+
+---
+management.endpoints.web.exposure.include: bindings
