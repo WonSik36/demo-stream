@@ -41,6 +41,14 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation('org.springframework.cloud:spring-cloud-stream') {
+        artifact {
+            name = "spring-cloud-stream"
+            extension = "jar"
+            type ="test-jar"
+            classifier = "test-binder"
+        }
+    }
 
     /* Avro */
     implementation 'org.apache.avro:avro:1.11.0'
