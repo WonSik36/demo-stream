@@ -21,7 +21,7 @@ spring.cloud.stream:
       type: kafka
       environment:
         spring.cloud.stream.kafka.binder:
-          brokers: 133.186.146.221:9092
+          brokers: <Broker IP>
           configuration:
             value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
             value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
@@ -30,10 +30,10 @@ spring.cloud.stream:
       supply-out-0:
         producer:
           configuration:
-            schema.registry.url: http://133.186.146.221:8081
+            schema.registry.url: <Registry IP>
       consumePageViews-in-0:
         consumer:
           configuration:
-            schema.registry.url: http://133.186.146.221:8081
+            schema.registry.url: <Registry IP>
             value.deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
             spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
