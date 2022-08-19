@@ -1,0 +1,39 @@
+spring.cloud.stream:
+  function:
+    definition: consumePageViews
+
+---
+spring.cloud.stream:
+  bindings:
+    supply-out-0:
+      destination: pageviews
+      binder: kafka
+      producer:
+        use-native-encoding: true
+    consumePageViews-in-0:
+      group: pageviewsGroup
+      destination: pageviews
+      binder: kafka
+      consumer:
+        use-native-encoding: true
+  binders:
+    kafka:
+      type: kafka
+      environment:
+        spring.cloud.stream.kafka.binder:
+          brokers: 133.186.146.221:9092
+          configuration:
+            value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+  kafka:
+    bindings:
+      supply-out-0:
+        producer:
+          configuration:
+            schema.registry.url: http://133.186.146.221:8081
+      consumePageViews-in-0:
+        consumer:
+          configuration:
+            schema.registry.url: http://133.186.146.221:8081
+            value.deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+            spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
