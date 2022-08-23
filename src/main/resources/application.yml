@@ -3,4 +3,14 @@ spring:
     name: demo-spring-cloud-stream
 
 ---
-management.endpoints.web.exposure.include: bindings
+management:
+  endpoints:
+    web.exposure.include: health, info, bindings
+
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+  health:
+    binders:
+      enabled: true
