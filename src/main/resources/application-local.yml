@@ -25,16 +25,16 @@ spring.cloud.stream:
           configuration:
             value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
             value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+          producer-properties:
+            schema.registry.url: <Registry IP>
+          consumer-properties:
+            schema.registry.url: <Registry IP>
+
   kafka:
     bindings:
-      supply-out-0:
-        producer:
-          configuration:
-            schema.registry.url: <Registry IP>
       consumePageViews-in-0:
         consumer:
           configuration:
-            schema.registry.url: <Registry IP>
             value.deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
             spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
 
